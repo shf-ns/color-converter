@@ -3,7 +3,9 @@ import { Sidebar } from '@/component'
 </script>
 
 <template>
-  <h1>一个简易的颜色转换器</h1>
+  <div class="header">
+    <h1>一个简易的颜色转换器</h1>
+  </div>
   <hr>
   <div class="main">
     <Sidebar />
@@ -15,13 +17,24 @@ import { Sidebar } from '@/component'
 </template>
 
 <style scoped>
+.header {
+  width: 100%;
+  height: 12%;
+  padding: 20px;
+}
+
 .main {
   display: flex;
   width: 100%;
-  height: 80%;
+  height: 75%;
 }
 
 .content {
   flex: 1;
+}
+
+.footer {
+  width: 100%;
+  height: 12%;
 }
 </style>
