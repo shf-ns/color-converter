@@ -13,20 +13,24 @@ import { Sidebar } from '@/component'
     <Sidebar />
   </div>
   <hr>
-  <div class="footer">页脚区域</div>
+  <div class="footer">
+    <span>Copyright © 2026 shf-ns</span>
+    <span>|</span>
+    <a href="https://github.com/shf-ns/color-converter" class="github">GitHub</a>
+  </div>
 </template>
 
 <style scoped>
 .header {
   width: 100%;
-  height: 12%;
-  padding: 20px;
+  height: 11%;
+  padding: 15px;
 }
 
 .main {
   display: flex;
   width: 100%;
-  height: 75%;
+  height: 80%;
 }
 
 .content {
@@ -34,7 +38,18 @@ import { Sidebar } from '@/component'
 }
 
 .footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
   width: 100%;
-  height: 12%;
+  height: 8%;
+  color: #999;
+  font-size: 14px;
+}
+
+.footer .github:hover {
+  color: #333;
+  text-decoration: underline;
 }
 </style>
