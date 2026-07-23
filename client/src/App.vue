@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -13,12 +14,12 @@
       </li>
     </ul>
   </div>
-  <div class="main">主题</div>
+  <RouterView />
 </template>
 
 <style scoped>
 .sidebar {
-  width: 20%;
+  width: 224px;
   height: 100%;
   padding: 20px;
   background-color: #fff;
