@@ -14,3 +14,12 @@ a {
   color: #999;
   text-decoration: none;
 }
+
+ul,
+li {
+  list-style: none;
+}
+
+input {
+  outline: none;
+}
