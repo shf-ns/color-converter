@@ -1,1 +1,1 @@
-export { default as Sidebar } from './sidebar.vue'
+export { default as Aside } from './aside.vue'
