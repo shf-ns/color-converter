@@ -13,14 +13,13 @@ import { Header, Footer } from '@/pages'
     <Sidebar />
   </div>
   <Footer />
-
 </template>
 
 <style scoped>
 .main {
   display: flex;
   width: 100%;
-  height: 75%;
+  padding: 20px;
 }
 
 .content {

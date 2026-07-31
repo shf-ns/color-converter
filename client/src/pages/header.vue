@@ -12,10 +12,11 @@
 .header {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   gap: 10px;
   width: 100%;
-  height: 17%;
-  padding: 15px;
+  height: 125px;
+  padding: 20px 15px 15px 70px;
 }
 </style>
