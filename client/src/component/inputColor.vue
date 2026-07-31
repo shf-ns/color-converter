@@ -3,7 +3,7 @@
 <template>
   <div class="input-box">
     <span class="input-title">输入颜色值</span>
-    <input type="text" class="input-color" />
+    <input type="text" class="input-color" value="#dddfe2" />
     <button class="input-btn">确认</button>
   </div>
 </template>
@@ -23,7 +23,7 @@
 .input-color {
   flex: 1;
   width: 100%;
-  height: 40px;
+  height: 50px;
   padding: 0px 10px;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
@@ -36,6 +36,7 @@
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   background: #f9fafb;
+  cursor: pointer;
 }
 
 .input-btn:hover {

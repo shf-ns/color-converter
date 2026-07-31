@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Sidebar, InputColor } from '@/component'
+import { Sidebar, InputColor, ShowColor } from '@/component'
 import { Header, Footer } from '@/pages'
 </script>
 
@@ -9,6 +9,7 @@ import { Header, Footer } from '@/pages'
     <Sidebar />
     <div class="content">
       <InputColor />
+      <ShowColor />
     </div>
     <Sidebar />
   </div>
@@ -19,10 +20,13 @@ import { Header, Footer } from '@/pages'
 .main {
   display: flex;
   width: 100%;
-  padding: 20px;
+  height: 75%;
+  padding: 15px;
 }
 
 .content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 </style>
