@@ -137,3 +137,5 @@ function rgbToHsl(rgb: RGB): HSL {
 
   return { h, s, l };
 }
+
+export { rgbToHex, rgbToCmyk, rgbToHsv, rgbToHsl }
