@@ -23,7 +23,8 @@ function normalization(rgb: RGB): { rn: number; gn: number; bn: number } {
  * @returns 十六进制颜色值
  */
 function rgbToHex(rgb: RGB): string {
-  return `#${rgb.r.toString(16).padStart(2, "0")}${rgb.g.toString(16).padStart(2, "0")}${rgb.b.toString(16).padStart(2, "0")}`;
+  const toHex = (n: number) => Math.round(n).toString(16).padStart(2, "0");
+  return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
 }
 
 /**
@@ -40,10 +41,10 @@ function rgbToCmyk(rgb: RGB): CMYK {
   if (k === 1) {
     return { c: 0, m: 0, y: 0, k: 100 };
   } else {
-    const c: number = ((1 - rn - k) / (1 - k)) * 100;
-    const m: number = ((1 - gn - k) / (1 - k)) * 100;
-    const y: number = ((1 - bn - k) / (1 - k)) * 100;
-    k = k * 100;
+    const m: number = Math.round(((1 - gn - k) / (1 - k)) * 100);
+    const c: number = Math.round(((1 - rn - k) / (1 - k)) * 100);
+    const y: number = Math.round(((1 - bn - k) / (1 - k)) * 100);
+    k = Math.round(k * 100);
     return { c, m, y, k };
   }
 }
@@ -66,11 +67,11 @@ function rgbToHsv(rgb: RGB): HSV {
 
   if (delta !== 0) {
     if (max === rn) {
-      h = 60 * (((gn - bn) / delta) % 6);
+      h = Math.round(60 * (((gn - bn) / delta) % 6));
     } else if (max === gn) {
-      h = 60 * ((bn - rn) / delta + 2);
+      h = Math.round(60 * ((bn - rn) / delta + 2));
     } else if (max === bn) {
-      h = 60 * ((rn - gn) / delta + 4);
+      h = Math.round(60 * ((rn - gn) / delta + 4));
     }
     if (h < 0) {
       h += 360;
@@ -81,11 +82,11 @@ function rgbToHsv(rgb: RGB): HSV {
   let s: number = 0;
 
   if (max !== 0) {
-    s = (delta / max) * 100;
+    s = Math.round((delta / max) * 100);
   }
 
   //亮度 V
-  let v: number = max * 100;
+  let v: number = Math.round(max * 100);
 
   return { h, s, v };
 }
@@ -110,11 +111,11 @@ function rgbToHsl(rgb: RGB): HSL {
 
   if (delta !== 0) {
     if (max === rn) {
-      h = 60 * (((gn - bn) / delta) % 6);
+      h = Math.round(60 * (((gn - bn) / delta) % 6));
     } else if (max === gn) {
-      h = 60 * ((bn - rn) / delta + 2);
+      h = Math.round(60 * ((bn - rn) / delta + 2));
     } else if (max === bn) {
-      h = 60 * ((rn - gn) / delta + 4);
+      h = Math.round(60 * ((rn - gn) / delta + 4));
     }
     if (h < 0) {
       h += 360;
@@ -126,14 +127,14 @@ function rgbToHsl(rgb: RGB): HSL {
 
   if (delta !== 0) {
     if (l <= 0.5) {
-      s = (delta / (max + min)) * 100;
+      s = Math.round((delta / (max + min)) * 100);
     } else if (l > 0.5) {
-      s = (delta / (2 - max - min)) * 100;
+      s = Math.round((delta / (2 - max - min)) * 100);
     }
   }
 
   //亮度 L
-  l = l * 100;
+  l = Math.round(l * 100);
 
   return { h, s, l };
 }

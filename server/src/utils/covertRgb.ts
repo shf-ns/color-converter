@@ -39,9 +39,9 @@ function hexToRgb(hex: string): RGB | null {
 function hueToRgb(p: number, q: number, t: number): number {
   if (t < 0) t += 1;
   if (t > 1) t -= 1;
-  if (t * 6 < p) return p + (q - p) * 6 * t;
-  if (t * 2 < 1) return q;
-  if (t * 3 < 2) return p + (q - p) * (2 / 3 - t) * 6;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
   return p;
 }
 
@@ -58,16 +58,16 @@ function hslToRgb(hsl: HSL): RGB {
   l = l / 100;
 
   if (s === 0) {
-    l = l * 225;
+    l = l * 255;
     return { r: l, g: l, b: l };
   } else {
     const q: number = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p: number = 2 * l - q;
     h = h / 360;
 
-    const r: number = hueToRgb(p, q, h + 1 / 3) * 225;
-    const g: number = hueToRgb(p, q, h) * 225;
-    const b: number = hueToRgb(p, q, h - 1 / 3) * 225;
+    const r: number = hueToRgb(p, q, h + 1 / 3) * 255;
+    const g: number = hueToRgb(p, q, h) * 255;
+    const b: number = hueToRgb(p, q, h - 1 / 3) * 255;
     return { r, g, b };
   }
 }
@@ -84,38 +84,31 @@ function hsvToRgb(hsv: HSV): RGB {
   s = s / 100;
   v = v / 100;
   if (s === 0) {
-    v = v * 225;
+    v = v * 255;
     return { r: v, g: v, b: v };
   } else {
-    h = h / 60;
+    h = (h % 360) / 60;
     const i: number = Math.floor(h);
     const f: number = h - i;
-    const p: number = v * (1 - s * f);
+    const p: number = v * (1 - s);
     const q: number = v * (1 - s * f);
     const t: number = v * (1 - s * (1 - f));
 
     switch (i) {
       case 0:
-        return { r: v * 225, g: t * 225, b: p * 225 };
-        break;
+        return { r: v * 255, g: t * 255, b: p * 255 };
       case 1:
-        return { r: q * 225, g: v * 225, b: p * 225 };
-        break;
+        return { r: q * 255, g: v * 255, b: p * 255 };
       case 2:
-        return { r: p * 225, g: v * 225, b: t * 225 };
-        break;
+        return { r: p * 255, g: v * 255, b: t * 255 };
       case 3:
-        return { r: p * 225, g: q * 225, b: v * 225 };
-        break;
+        return { r: p * 255, g: q * 255, b: v * 255 };
       case 4:
-        return { r: t * 225, g: p * 225, b: v * 225 };
-        break;
+        return { r: t * 255, g: p * 255, b: v * 255 };
       case 5:
-        return { r: v * 225, g: p * 225, b: q * 225 };
-        break;
+        return { r: v * 255, g: p * 255, b: q * 255 };
       default:
         return { r: 0, g: 0, b: 0 };
-        break;
     }
   }
 }
@@ -134,8 +127,10 @@ function cmykToRgb(cmyk: CMYK): RGB {
   y = y / 100;
   k = k / 100;
 
-  const r: number = 225 * (1 - c) * (1 - k);
-  const g: number = 225 * (1 - m) * (1 - k);
-  const b: number = 225 * (1 - y) * (1 - k);
+  const r: number = 255 * (1 - c) * (1 - k);
+  const g: number = 255 * (1 - m) * (1 - k);
+  const b: number = 255 * (1 - y) * (1 - k);
   return { r, g, b };
 }
+
+export { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb };
