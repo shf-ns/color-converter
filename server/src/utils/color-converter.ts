@@ -1,4 +1,4 @@
-import type { RGB } from '../types/rgb.ts'
+import type { RGB, CMYK } from '../types/index.ts'
 
 function hexToRgb(hex: string): RGB | null {
   let color = hex.trim().replace('#', '')
@@ -21,4 +21,24 @@ function hexToRgb(hex: string): RGB | null {
 
 function rgbToHex(rgb: RGB): string {
   return `#${rgb.r.toString(16).padStart(2, '0')}${rgb.g.toString(16).padStart(2, '0')}${rgb.b.toString(16).padStart(2, '0')}`
+}
+
+function rgbToCmyk(rgb: RGB): CMYK {
+  const { r, g, b } = rgb;
+
+  const rn = r / 255;
+  const gn = g / 255;
+  const bn = b / 255;
+
+  let k = 1 - Math.max(rn, gn, bn);
+
+  if(k === 1) {
+    return { c: 0, m: 0, y: 0, k: 100 };
+  }else {
+    const c = (1 - rn - k) / (1 - k) * 100;
+    const m = (1 - gn - k) / (1 - k) * 100;
+    const y = (1 - bn - k) / (1 - k) * 100;
+    k = k * 100;
+    return { c, m, y, k };
+  }
 }
