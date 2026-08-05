@@ -1,48 +1,48 @@
-import type { RGB, CMYK, HSV, HSL } from '../types/index.ts'
+import type { RGB, CMYK, HSV, HSL } from "../types/index.ts";
 
 /**
  * RGB 归一化 RGB 颜色值
- * 
+ *
  * @param rgb RGB 颜色值
  * @returns 归一化后的 RGB 颜色值
  */
-function normalization(rgb: RGB): { rn: number, gn: number, bn: number } {
+function normalization(rgb: RGB): { rn: number; gn: number; bn: number } {
   const { r, g, b } = rgb;
 
-  const rn:number = r / 255;
-  const gn:number = g / 255;
-  const bn:number = b / 255;
+  const rn: number = r / 255;
+  const gn: number = g / 255;
+  const bn: number = b / 255;
 
-  return{ rn, gn, bn };
+  return { rn, gn, bn };
 }
 
 /**
  * RGB 转换 十六进制
- * 
+ *
  * @param rgb RGB 颜色值
  * @returns 十六进制颜色值
  */
 function rgbToHex(rgb: RGB): string {
-  return `#${rgb.r.toString(16).padStart(2, '0')}${rgb.g.toString(16).padStart(2, '0')}${rgb.b.toString(16).padStart(2, '0')}`
+  return `#${rgb.r.toString(16).padStart(2, "0")}${rgb.g.toString(16).padStart(2, "0")}${rgb.b.toString(16).padStart(2, "0")}`;
 }
 
 /**
  * RGB 转换 CMYK 颜色值
- * 
+ *
  * @param rgb RGB 颜色值
  * @returns CMYK 颜色值
  */
 function rgbToCmyk(rgb: RGB): CMYK {
   const { rn, gn, bn } = normalization(rgb);
 
-  let k:number = 1 - Math.max(rn, gn, bn);
+  let k: number = 1 - Math.max(rn, gn, bn);
 
-  if(k === 1) {
+  if (k === 1) {
     return { c: 0, m: 0, y: 0, k: 100 };
-  }else {
-    const c:number = (1 - rn - k) / (1 - k) * 100;
-    const m:number = (1 - gn - k) / (1 - k) * 100;
-    const y:number = (1 - bn - k) / (1 - k) * 100;
+  } else {
+    const c: number = ((1 - rn - k) / (1 - k)) * 100;
+    const m: number = ((1 - gn - k) / (1 - k)) * 100;
+    const y: number = ((1 - bn - k) / (1 - k)) * 100;
     k = k * 100;
     return { c, m, y, k };
   }
@@ -50,19 +50,19 @@ function rgbToCmyk(rgb: RGB): CMYK {
 
 /**
  * RGB 转换 HSV 颜色值
- * 
+ *
  * @param rgb RGB 颜色值
  * @returns HSV 颜色值
  */
 function rgbToHsv(rgb: RGB): HSV {
   const { rn, gn, bn } = normalization(rgb);
 
-  const max:number = Math.max(rn, gn, bn);
-  const min:number = Math.min(rn, gn, bn);
-  const delta:number = max - min;
+  const max: number = Math.max(rn, gn, bn);
+  const min: number = Math.min(rn, gn, bn);
+  const delta: number = max - min;
 
   //色相 H
-  let h:number = 0;
+  let h: number = 0;
 
   if (delta !== 0) {
     if (max === rn) {
@@ -78,36 +78,36 @@ function rgbToHsv(rgb: RGB): HSV {
   }
 
   //饱和度 S
-  let s:number = 0;
+  let s: number = 0;
 
-  if(max !== 0) {
-    s = delta / max * 100;
+  if (max !== 0) {
+    s = (delta / max) * 100;
   }
 
   //亮度 V
-  let v:number = max * 100;
-  
+  let v: number = max * 100;
+
   return { h, s, v };
 }
 
 /**
  * RGB 转换 HSL 颜色值
- * 
+ *
  * @param rgb RGB 颜色值
  * @returns HSL 颜色值
  */
 function rgbToHsl(rgb: RGB): HSL {
   const { rn, gn, bn } = normalization(rgb);
 
-  const max:number = Math.max(rn, gn, bn);
-  const min:number = Math.min(rn, gn, bn);
-  const delta:number = max - min;
+  const max: number = Math.max(rn, gn, bn);
+  const min: number = Math.min(rn, gn, bn);
+  const delta: number = max - min;
 
-  let l:number = (max + min) / 2;
-  
+  let l: number = (max + min) / 2;
+
   //色相 H
-  let h:number = 0;
-  
+  let h: number = 0;
+
   if (delta !== 0) {
     if (max === rn) {
       h = 60 * (((gn - bn) / delta) % 6);
@@ -120,15 +120,15 @@ function rgbToHsl(rgb: RGB): HSL {
       h += 360;
     }
   }
-  
+
   //饱和度 S
-  let s:number = 0;
-  
-  if(delta !== 0) {
-    if(l <= 0.5){
-      s = delta / (max + min) * 100;
-    }else if (l > 0.5) {
-      s = delta / (2 - max - min) * 100;
+  let s: number = 0;
+
+  if (delta !== 0) {
+    if (l <= 0.5) {
+      s = (delta / (max + min)) * 100;
+    } else if (l > 0.5) {
+      s = (delta / (2 - max - min)) * 100;
     }
   }
 
@@ -138,4 +138,4 @@ function rgbToHsl(rgb: RGB): HSL {
   return { h, s, l };
 }
 
-export { rgbToHex, rgbToCmyk, rgbToHsv, rgbToHsl }
+export { rgbToHex, rgbToCmyk, rgbToHsv, rgbToHsl };
