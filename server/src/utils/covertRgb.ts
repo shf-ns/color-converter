@@ -1,4 +1,4 @@
-import type { HSL, HSV, RGB } from "../types/index.ts";
+import type { HSL, HSV, RGB, CMYK } from "../types/index.ts";
 
 /**
  * HEX 颜色值转换为 RGB 颜色值
@@ -118,4 +118,24 @@ function hsvToRgb(hsv: HSV): RGB {
         break;
     }
   }
+}
+
+/**
+ * CMYK 颜色值转换为 RGB 颜色值
+ *
+ * @param cmyk CMYK 颜色值
+ * @returns RGB 颜色值
+ */
+function cmykToRgb(cmyk: CMYK): RGB {
+  let { c, m, y, k } = cmyk;
+
+  c = c / 100;
+  m = m / 100;
+  y = y / 100;
+  k = k / 100;
+
+  const r: number = 225 * (1 - c) * (1 - k);
+  const g: number = 225 * (1 - m) * (1 - k);
+  const b: number = 225 * (1 - y) * (1 - k);
+  return { r, g, b };
 }
