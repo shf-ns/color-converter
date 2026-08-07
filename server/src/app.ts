@@ -7,7 +7,13 @@ import {
   rgbToHsv,
   rgbToHsl,
 } from "./utils/rgbCovertOther.ts";
-import { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb } from "./utils/covertRgb.ts";
+import {
+  hexToRgb,
+  hslToRgb,
+  hsvToRgb,
+  cmykToRgb,
+  rgbToRgb,
+} from "./utils/covertRgb.ts";
 
 const app: Express = express();
 
@@ -33,7 +39,7 @@ app.post("/api/convert", (req: Request, res: Response) => {
       rgb = hexToRgb(value);
       break;
     case "rgb":
-      rgb = value; // 本来就是 RGB，直接用
+      rgb = rgbToRgb(value); // 本来就是 RGB，直接用
       break;
     case "hsl":
       rgb = hslToRgb(value);

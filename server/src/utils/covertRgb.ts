@@ -45,6 +45,14 @@ function hueToRgb(p: number, q: number, t: number): number {
   return p;
 }
 
+function rgbToRgb(rgb: string): RGB {
+  const value = rgb.split(",");
+  const r: number = Number(value[0].slice(-3));
+  const g: number = Number(value[1].trim());
+  const b: number = Number(value[2].trim().slice(0, 3));
+  return { r, g, b };
+}
+
 /**
  * HSL 颜色值转换为 RGB 颜色值
  *
@@ -133,4 +141,4 @@ function cmykToRgb(cmyk: CMYK): RGB {
   return { r, g, b };
 }
 
-export { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb };
+export { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb, rgbToRgb };
