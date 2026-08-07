@@ -45,11 +45,17 @@ function hueToRgb(p: number, q: number, t: number): number {
   return p;
 }
 
+/**
+ * RGB 颜色值转换为 RGB 颜色值
+ *
+ * @param rgb RGB 颜色值
+ * @returns
+ */
 function rgbToRgb(rgb: string): RGB {
   const value = rgb.split(",");
-  const r: number = Number(value[0].slice(-3));
+  const r: number = Number(value[0].slice(4));
   const g: number = Number(value[1].trim());
-  const b: number = Number(value[2].trim().slice(0, 3));
+  const b: number = Number(value[2].trim().slice(0, -1));
   return { r, g, b };
 }
 
@@ -59,11 +65,13 @@ function rgbToRgb(rgb: string): RGB {
  * @param hsl HSL 颜色值
  * @returns RGB 颜色值
  */
-function hslToRgb(hsl: HSL): RGB {
-  let { h, s, l } = hsl;
+function hslToRgb(hsl: string): RGB {
+  const value = hsl.split(",");
+  let h: number = Number(value[0].slice(4));
+  let s: number = Number(value[1].trim().slice(0, -1));
+  let l: number = Number(value[2].trim().slice(0, -2));
 
   s = s / 100;
-  l = l / 100;
 
   if (s === 0) {
     l = l * 255;
