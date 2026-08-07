@@ -19,8 +19,8 @@ function detectType(value: string): "hex" | "rgb" | "hsl" | "hsv" | "cmyk" {
   return 'hex'
 }
 const submitColor = async (): Promise<void> => {
-  const type: "hex" | "rgb" | "hsl" | "hsv" | "cmyk" = detectType(colorValue.value)
-  const value: string = colorValue.value
+  const type: "hex" | "rgb" | "hsl" | "hsv" | "cmyk" = detectType(colorValue.value.trim())
+  const value: string = colorValue.value.trim()
 
   try {
     const res = await fetch('/api/convert', {
