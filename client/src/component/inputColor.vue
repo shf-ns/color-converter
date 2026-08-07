@@ -1,10 +1,56 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from "vue";
+import type { RGB, HSL, HSV, CMYK } from "@/types";
+
+const colorValue = ref<string>("#dddfe2");
+
+/**
+ * 检测颜色值类型
+ * 
+ * @param value 颜色值
+ * @returns 颜色值类型
+ */
+function detectType(value: string) {
+  if (value.startsWith('#')) return 'hex'
+  if (value.startsWith('rgb')) return 'rgb'
+  if (value.startsWith('hsl')) return 'hsl'
+  if (value.startsWith('hsv')) return 'hsv'
+  if (value.startsWith('cmyk')) return 'cmyk'
+  return 'hex'
+}
+const submitColor = async () => {
+  const type = detectType(colorValue.value)
+  const value = colorValue.value
+
+  try {
+    const res = await fetch('/api/convert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, value }),
+    })
+    const data = await res.json()
+    colorResult.value = data
+  } catch (err) {
+    console.error('请求失败:', err)
+  }
+};
+
+// 转换结果，传给 showColor
+const colorResult = ref<{ hex: string, rgb: RGB, cmyk: CMYK, hsl: HSL, hsv: HSV }>({
+  hex: '#dddfe2',
+  rgb: { r: 221, g: 223, b: 226 },
+  cmyk: { c: 2, m: 1, y: 0, k: 11 },
+  hsl: { h: 216, s: 8, l: 88 },
+  hsv: { h: 216, s: 2, v: 89 },
+})
+
+</script>
 
 <template>
   <div class="input-box">
     <span class="input-title">输入颜色值</span>
-    <input type="text" class="input-color" value="#dddfe2" />
-    <button class="input-btn">确认</button>
+    <input type="text" class="input-color" v-model="colorValue" />
+    <button class="input-btn" @click="submitColor">确认</button>
   </div>
 </template>
 

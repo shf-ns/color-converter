@@ -1,4 +1,5 @@
 import express, { type Express, type Request, type Response } from "express";
+import type { RGB, HSL, HSV, CMYK } from "./types/index.ts";
 import cors from "cors";
 import {
   rgbToHex,
@@ -54,7 +55,7 @@ app.post("/api/convert", (req: Request, res: Response) => {
   }
 
   // 第二步：从 RGB 转出所有格式
-  const result = {
+  const result: { hex: string; rgb: RGB; cmyk: CMYK; hsl: HSL; hsv: HSV } = {
     hex: rgbToHex(rgb),
     rgb: rgb,
     cmyk: rgbToCmyk(rgb),
