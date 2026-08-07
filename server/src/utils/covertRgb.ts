@@ -72,18 +72,19 @@ function hslToRgb(hsl: string): RGB {
   let l: number = Number(value[2].trim().slice(0, -2));
 
   s = s / 100;
+  l = l / 100;
 
   if (s === 0) {
-    l = l * 255;
+    l = Math.round(l * 255);
     return { r: l, g: l, b: l };
   } else {
     const q: number = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p: number = 2 * l - q;
     h = h / 360;
 
-    const r: number = hueToRgb(p, q, h + 1 / 3) * 255;
-    const g: number = hueToRgb(p, q, h) * 255;
-    const b: number = hueToRgb(p, q, h - 1 / 3) * 255;
+    const r: number = Math.round(hueToRgb(p, q, h + 1 / 3) * 255);
+    const g: number = Math.round(hueToRgb(p, q, h) * 255);
+    const b: number = Math.round(hueToRgb(p, q, h - 1 / 3) * 255);
     return { r, g, b };
   }
 }
@@ -94,13 +95,16 @@ function hslToRgb(hsl: string): RGB {
  * @param hsv HSV 颜色值
  * @returns RGB 颜色值
  */
-function hsvToRgb(hsv: HSV): RGB {
-  let { h, s, v } = hsv;
+function hsvToRgb(hsv: string): RGB {
+  const value = hsv.split(",");
+  let h: number = Number(value[0].slice(4));
+  let s: number = Number(value[1].trim().slice(0, -1));
+  let v: number = Number(value[2].trim().slice(0, -2));
 
   s = s / 100;
   v = v / 100;
   if (s === 0) {
-    v = v * 255;
+    v = Math.round(v * 255);
     return { r: v, g: v, b: v };
   } else {
     h = (h % 360) / 60;
@@ -112,17 +116,41 @@ function hsvToRgb(hsv: HSV): RGB {
 
     switch (i) {
       case 0:
-        return { r: v * 255, g: t * 255, b: p * 255 };
+        return {
+          r: Math.round(v * 255),
+          g: Math.round(t * 255),
+          b: Math.round(p * 255),
+        };
       case 1:
-        return { r: q * 255, g: v * 255, b: p * 255 };
+        return {
+          r: Math.round(q * 255),
+          g: Math.round(v * 255),
+          b: Math.round(p * 255),
+        };
       case 2:
-        return { r: p * 255, g: v * 255, b: t * 255 };
+        return {
+          r: Math.round(p * 255),
+          g: Math.round(v * 255),
+          b: Math.round(t * 255),
+        };
       case 3:
-        return { r: p * 255, g: q * 255, b: v * 255 };
+        return {
+          r: Math.round(p * 255),
+          g: Math.round(q * 255),
+          b: Math.round(v * 255),
+        };
       case 4:
-        return { r: t * 255, g: p * 255, b: v * 255 };
+        return {
+          r: Math.round(t * 255),
+          g: Math.round(p * 255),
+          b: Math.round(v * 255),
+        };
       case 5:
-        return { r: v * 255, g: p * 255, b: q * 255 };
+        return {
+          r: Math.round(v * 255),
+          g: Math.round(p * 255),
+          b: Math.round(q * 255),
+        };
       default:
         return { r: 0, g: 0, b: 0 };
     }
@@ -143,9 +171,9 @@ function cmykToRgb(cmyk: CMYK): RGB {
   y = y / 100;
   k = k / 100;
 
-  const r: number = 255 * (1 - c) * (1 - k);
-  const g: number = 255 * (1 - m) * (1 - k);
-  const b: number = 255 * (1 - y) * (1 - k);
+  const r: number = Math.round(255 * (1 - c) * (1 - k));
+  const g: number = Math.round(255 * (1 - m) * (1 - k));
+  const b: number = Math.round(255 * (1 - y) * (1 - k));
   return { r, g, b };
 }
 
