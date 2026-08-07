@@ -10,7 +10,7 @@ const colorValue = ref<string>("#dddfe2");
  * @param value 颜色值
  * @returns 颜色值类型
  */
-function detectType(value: string) {
+function detectType(value: string): "hex" | "rgb" | "hsl" | "hsv" | "cmyk" {
   if (value.startsWith('#')) return 'hex'
   if (value.startsWith('rgb')) return 'rgb'
   if (value.startsWith('hsl')) return 'hsl'
@@ -18,9 +18,9 @@ function detectType(value: string) {
   if (value.startsWith('cmyk')) return 'cmyk'
   return 'hex'
 }
-const submitColor = async () => {
-  const type = detectType(colorValue.value)
-  const value = colorValue.value
+const submitColor = async (): Promise<void> => {
+  const type: "hex" | "rgb" | "hsl" | "hsv" | "cmyk" = detectType(colorValue.value)
+  const value: string = colorValue.value
 
   try {
     const res = await fetch('/api/convert', {
