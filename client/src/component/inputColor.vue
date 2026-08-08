@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import type { RGB, HSL, HSV, CMYK } from "@/types";
+import type { DetectType, ColorData } from "@/types";
 
 const colorValue = ref<string>("#dddfe2");
 
@@ -10,7 +10,7 @@ const colorValue = ref<string>("#dddfe2");
  * @param value 颜色值
  * @returns 颜色值类型
  */
-function detectType(value: string): "hex" | "rgb" | "hsl" | "hsv" | "cmyk" {
+function detectType(value: string): DetectType {
   if (value.startsWith('#')) return 'hex'
   if (value.startsWith('rgb')) return 'rgb'
   if (value.startsWith('hsl')) return 'hsl'
@@ -19,8 +19,17 @@ function detectType(value: string): "hex" | "rgb" | "hsl" | "hsv" | "cmyk" {
   return 'hex'
 }
 const submitColor = async (): Promise<void> => {
-  const type: "hex" | "rgb" | "hsl" | "hsv" | "cmyk" = detectType(colorValue.value.trim())
+  const type: DetectType = detectType(colorValue.value.trim())
   const value: string = colorValue.value.trim()
+
+  // 转换结果，传给 showColor
+  const colorResult = ref<ColorData>({
+    hex: '',
+    rgb: { r: 0, g: 0, b: 0 },
+    cmyk: { c: 0, m: 0, y: 0, k: 0 },
+    hsl: { h: 0, s: 0, l: 0 },
+    hsv: { h: 0, s: 0, v: 0 },
+  })
 
   try {
     const res = await fetch('/api/convert', {
@@ -33,16 +42,9 @@ const submitColor = async (): Promise<void> => {
   } catch (err) {
     console.error('请求失败:', err)
   }
+
 };
 
-// 转换结果，传给 showColor
-const colorResult = ref<{ hex: string, rgb: RGB, cmyk: CMYK, hsl: HSL, hsv: HSV }>({
-  hex: '#dddfe2',
-  rgb: { r: 221, g: 223, b: 226 },
-  cmyk: { c: 2, m: 1, y: 0, k: 11 },
-  hsl: { h: 216, s: 8, l: 88 },
-  hsv: { h: 216, s: 2, v: 89 },
-})
 
 </script>
 
