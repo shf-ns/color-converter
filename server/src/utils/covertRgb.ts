@@ -46,30 +46,13 @@ function hueToRgb(p: number, q: number, t: number): number {
 }
 
 /**
- * RGB 颜色值转换为 RGB 颜色值
- *
- * @param rgb RGB 颜色值
- * @returns
- */
-function rgbToRgb(rgb: string): RGB {
-  const value = rgb.split(",");
-  const r: number = Number(value[0].slice(4));
-  const g: number = Number(value[1].trim());
-  const b: number = Number(value[2].trim().slice(0, -1));
-  return { r, g, b };
-}
-
-/**
  * HSL 颜色值转换为 RGB 颜色值
  *
  * @param hsl HSL 颜色值
  * @returns RGB 颜色值
  */
-function hslToRgb(hsl: string): RGB {
-  const value = hsl.split(",");
-  let h: number = Number(value[0].slice(4));
-  let s: number = Number(value[1].trim().slice(0, -1));
-  let l: number = Number(value[2].trim().slice(0, -2));
+function hslToRgb(hsl: HSL): RGB {
+  let { h, s, l } = hsl;
 
   s = s / 100;
   l = l / 100;
@@ -95,11 +78,8 @@ function hslToRgb(hsl: string): RGB {
  * @param hsv HSV 颜色值
  * @returns RGB 颜色值
  */
-function hsvToRgb(hsv: string): RGB {
-  const value = hsv.split(",");
-  let h: number = Number(value[0].slice(4));
-  let s: number = Number(value[1].trim().slice(0, -1));
-  let v: number = Number(value[2].trim().slice(0, -2));
+function hsvToRgb(hsv: HSV): RGB {
+  let { h, s, v } = hsv;
 
   s = s / 100;
   v = v / 100;
@@ -177,4 +157,4 @@ function cmykToRgb(cmyk: CMYK): RGB {
   return { r, g, b };
 }
 
-export { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb, rgbToRgb };
+export { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb };

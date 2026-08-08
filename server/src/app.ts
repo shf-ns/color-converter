@@ -7,13 +7,7 @@ import {
   rgbToHsv,
   rgbToHsl,
 } from "./utils/rgbCovertOther.ts";
-import {
-  hexToRgb,
-  hslToRgb,
-  hsvToRgb,
-  cmykToRgb,
-  rgbToRgb,
-} from "./utils/covertRgb.ts";
+import { hexToRgb, hslToRgb, hsvToRgb, cmykToRgb } from "./utils/covertRgb.ts";
 
 const app: Express = express();
 
@@ -31,24 +25,51 @@ app.use(
 app.post("/api/convert", (req: Request, res: Response) => {
   const { type, value } = req.body;
 
-  let rgb: { r: number; g: number; b: number } | null = null;
+  let rgb: RGB | null = null;
+  let hex: string = "";
+  let cmyk: CMYK = { c: 0, m: 0, y: 0, k: 0 };
+  let hsl: HSL = { h: 0, s: 0, l: 0 };
+  let hsv: HSV = { h: 0, s: 0, v: 0 };
 
-  // 第一步：不管输入是什么格式，先统一转成 RGB
   switch (type) {
     case "hex":
+      hex = value;
       rgb = hexToRgb(value);
       break;
     case "rgb":
-      rgb = rgbToRgb(value); // 本来就是 RGB，直接用
+      const rgbValues: string[] | null = value.split(",");
+      const r: number = Number(rgbValues?.[0].slice(4));
+      const g: number = Number(rgbValues?.[1].trim());
+      const b: number = Number(rgbValues?.[2].trim().slice(0, -1));
+      rgb = { r, g, b };
       break;
     case "hsl":
-      rgb = hslToRgb(value);
+      const hslValues: string[] | null = value.split(",");
+      hsl = {
+        h: Number(hslValues?.[0].slice(4)),
+        s: Number(hslValues?.[1].trim().slice(0, -1)),
+        l: Number(hslValues?.[2].trim().slice(0, -2)),
+      };
+      rgb = hslToRgb(hsl);
       break;
     case "hsv":
-      rgb = hsvToRgb(value);
+      const hsvValues: string[] | null = value.split(",");
+      hsv = {
+        h: Number(hsvValues?.[0].slice(4)),
+        s: Number(hsvValues?.[1].trim().slice(0, -1)),
+        v: Number(hsvValues?.[2].trim().slice(0, -2)),
+      };
+      rgb = hsvToRgb(hsv);
       break;
     case "cmyk":
-      rgb = cmykToRgb(value);
+      const cmykValues: string[] | null = value.split(",");
+      cmyk = {
+        c: Number(cmykValues?.[0].slice(5, -1)),
+        m: Number(cmykValues?.[1].trim().slice(0, -1)),
+        y: Number(cmykValues?.[2].trim().slice(0, -1)),
+        k: Number(cmykValues?.[3].trim().slice(0, -2)),
+      };
+      rgb = cmykToRgb(cmyk);
       break;
     default:
       res.status(400).json({ error: "不支持的颜色类型" });
@@ -60,14 +81,12 @@ app.post("/api/convert", (req: Request, res: Response) => {
     return;
   }
 
-  // 第二步：从 RGB 转出所有格式
-  const result: { hex: string; rgb: RGB; cmyk: CMYK; hsl: HSL; hsv: HSV } = {
-    hex: rgbToHex(rgb),
-    rgb: rgb,
-    cmyk: rgbToCmyk(rgb),
-    hsl: rgbToHsl(rgb),
-    hsv: rgbToHsv(rgb),
-  };
+  if (!hex) hex = rgbToHex(rgb);
+  if (!hsl.h && !hsl.s && !hsl.l) hsl = rgbToHsl(rgb);
+  if (!hsv.h && !hsv.s && !hsv.v) hsv = rgbToHsv(rgb);
+  if (!cmyk.c && !cmyk.m && !cmyk.y && !cmyk.k) cmyk = rgbToCmyk(rgb);
+
+  const result = { hex, rgb, cmyk, hsl, hsv };
 
   res.json(result);
 });
