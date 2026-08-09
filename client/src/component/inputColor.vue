@@ -1,24 +1,11 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import type { DetectType, ColorData } from "@/types";
+import { detectType, debounceAdvanced } from "@/tool";
 
 const colorValue = ref<string>("#dddfe2");
 
 const emit = defineEmits(['send-color']);
-/**
- * 检测颜色值类型
- * 
- * @param value 颜色值
- * @returns 颜色值类型
- */
-function detectType(value: string): DetectType {
-  if (value.startsWith('#')) return 'hex'
-  if (value.startsWith('rgb')) return 'rgb'
-  if (value.startsWith('hsl')) return 'hsl'
-  if (value.startsWith('hsv')) return 'hsv'
-  if (value.startsWith('cmyk')) return 'cmyk'
-  return 'hex'
-}
 
 // 转换结果，传给 showColor
 const colorResult = ref<ColorData>({
@@ -28,7 +15,8 @@ const colorResult = ref<ColorData>({
   hsl: { h: 216, s: 8, l: 88 },
   hsv: { h: 216, s: 2, v: 89 },
 })
-const submitColor = async (): Promise<void> => {
+
+const submitColor = debounceAdvanced(async (): Promise<void> => {
   const type: DetectType = detectType(colorValue.value.trim())
   const value: string = colorValue.value.trim()
 
@@ -43,7 +31,7 @@ const submitColor = async (): Promise<void> => {
   } catch (err) {
     console.error('请求失败:', err)
   }
-};
+}, 500);
 
 
 </script>
