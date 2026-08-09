@@ -4,6 +4,7 @@ import type { DetectType, ColorData } from "@/types";
 
 const colorValue = ref<string>("#dddfe2");
 
+const emit = defineEmits(['send-color']);
 /**
  * 检测颜色值类型
  * 
@@ -18,18 +19,18 @@ function detectType(value: string): DetectType {
   if (value.startsWith('cmyk')) return 'cmyk'
   return 'hex'
 }
+
+// 转换结果，传给 showColor
+const colorResult = ref<ColorData>({
+  hex: '#dddfe2',
+  rgb: { r: 221, g: 223, b: 226 },
+  cmyk: { c: 2, m: 1, y: 0, k: 11 },
+  hsl: { h: 216, s: 8, l: 88 },
+  hsv: { h: 216, s: 2, v: 89 },
+})
 const submitColor = async (): Promise<void> => {
   const type: DetectType = detectType(colorValue.value.trim())
   const value: string = colorValue.value.trim()
-
-  // 转换结果，传给 showColor
-  const colorResult = ref<ColorData>({
-    hex: '',
-    rgb: { r: 0, g: 0, b: 0 },
-    cmyk: { c: 0, m: 0, y: 0, k: 0 },
-    hsl: { h: 0, s: 0, l: 0 },
-    hsv: { h: 0, s: 0, v: 0 },
-  })
 
   try {
     const res = await fetch('/api/convert', {
@@ -37,12 +38,11 @@ const submitColor = async (): Promise<void> => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, value }),
     })
-    const data = await res.json()
-    colorResult.value = data
+    colorResult.value = await res.json()
+    emit('send-color', colorResult.value)
   } catch (err) {
     console.error('请求失败:', err)
   }
-
 };
 
 

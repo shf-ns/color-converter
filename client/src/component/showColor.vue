@@ -1,10 +1,18 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+});
+
+</script>
 
 <template>
   <ul class="show-color">
     <li>
       <span class="title">RGB</span>
-      <p class="result">rgb(221, 223, 226)</p>
+      <p class="result">rgb({{ props.user.rgb.r }}, {{ props.user.rgb.g }}, {{ props.user.rgb.b }})</p>
       <button class="copy-btn">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
@@ -13,7 +21,7 @@
     </li>
     <li>
       <span class="title">HEX</span>
-      <p class="result">#dddfe2</p>
+      <p class="result">{{ props.user.hex }}</p>
       <button class="copy-btn">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
@@ -22,7 +30,8 @@
     </li>
     <li>
       <span class="title">CMYK</span>
-      <p class="result">cmyk(2%, 1%, 0%, 11%)</p>
+      <p class="result">cmyk({{ props.user.cmyk.c }}%, {{ props.user.cmyk.m }}%, {{ props.user.cmyk.y }}%, {{
+        props.user.cmyk.k }}%)</p>
       <button class="copy-btn">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
@@ -31,7 +40,7 @@
     </li>
     <li>
       <span class="title">HSV</span>
-      <p class="result">hsv(216, 2%, 89%)</p>
+      <p class="result">hsv({{ props.user.hsv.h }}, {{ props.user.hsv.s }}%, {{ props.user.hsv.v }}%)</p>
       <button class="copy-btn">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
@@ -40,7 +49,7 @@
     </li>
     <li>
       <span class="title">HSL</span>
-      <p class="result">hsl(216, 8%, 88%)</p>
+      <p class="result">hsl({{ props.user.hsl.h }}, {{ props.user.hsl.s }}%, {{ props.user.hsl.l }}%)</p>
       <button class="copy-btn">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
