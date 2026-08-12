@@ -18,19 +18,16 @@ const handleColor = (newObj: ColorData): void => {
   colorInfo.value = newObj;
 };
 
-const handleCopySuccess = (isCopy: boolean): void => {
-  showAlert.value = isCopy
-}
 </script>
 
 <template>
   <Header />
-  <Alert :show="showAlert" />
+  <Alert />
   <div class="main">
     <Sidebar />
     <div class="content">
       <InputColor @send-color="handleColor" />
-      <ShowColor :user="colorInfo" @copy-success="handleCopySuccess" />
+      <ShowColor :user="colorInfo" />
     </div>
     <Sidebar />
   </div>

@@ -3,14 +3,6 @@ import { onMounted, onUnmounted, ref } from 'vue';
 
 const showAlert = ref<boolean>(false)
 
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false
-  }
-})
-
-
 showAlert.value = true
 onMounted((): void => {
   const timer = setTimeout(() => {
