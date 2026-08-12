@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Sidebar, InputColor, ShowColor } from '@/component'
+import { Sidebar, InputColor, ShowColor, Alert } from '@/component'
 import { Header, Footer } from '@/pages'
 import { ref } from 'vue';
 import type { ColorData } from '@/types';
@@ -20,6 +20,7 @@ const handleColor = (newObj: ColorData): void => {
 
 <template>
   <Header />
+  <Alert />
   <div class="main">
     <Sidebar />
     <div class="content">
