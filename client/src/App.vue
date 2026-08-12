@@ -13,19 +13,24 @@ const colorInfo = ref<ColorData>(
     hsv: { h: 216, s: 2, v: 89 },
   }
 );
+const showAlert = ref<boolean>(false)
 const handleColor = (newObj: ColorData): void => {
   colorInfo.value = newObj;
 };
+
+const handleCopySuccess = (isCopy: boolean): void => {
+  showAlert.value = isCopy
+}
 </script>
 
 <template>
   <Header />
-  <Alert />
+  <Alert :show="showAlert" />
   <div class="main">
     <Sidebar />
     <div class="content">
       <InputColor @send-color="handleColor" />
-      <ShowColor :user="colorInfo" />
+      <ShowColor :user="colorInfo" @copy-success="handleCopySuccess" />
     </div>
     <Sidebar />
   </div>

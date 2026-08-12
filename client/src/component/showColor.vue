@@ -1,10 +1,41 @@
 <script lang="ts" setup>
+import { useCopy } from '@/Composables/useCopy';
+import type { DetectType } from '@/types';
+
 const props = defineProps({
   user: {
     type: Object,
     required: true
   }
 });
+
+const { isCopy, copy } = useCopy()
+
+const emit = defineEmits(['copy-success'])
+
+const copyShow = async (type: DetectType): Promise<void> => {
+  if (type === 'rgb') {
+    await copy('rgb(' + props.user.rgb.r + ',' + props.user.rgb.g + ',' + props.user.rgb.b + ')')
+    emit('copy-success', isCopy.value)
+
+  } else if (type === 'hex') {
+    await copy(props.user.hex)
+    emit('copy-success', isCopy.value)
+
+  } else if (type === 'cmyk') {
+    await copy('cmyk(' + props.user.cmyk.c + ', ' + props.user.cmyk.m + ', ' + props.user.cmyk.y + ', ' + props.user.cmyk.k + ')')
+    emit('copy-success', isCopy.value)
+
+  } else if (type === 'hsv') {
+    await copy('hsv(' + props.user.hsv.h + ', ' + props.user.hsv.s + ', ' + props.user.hsv.v + ')')
+    emit('copy-success', isCopy.value)
+
+  } else if (type === 'hsl') {
+    await copy('hsl(' + props.user.hsl.h + ', ' + props.user.hsl.s + ', ' + props.user.hsl.l + ')')
+    emit('copy-success', isCopy.value)
+
+  }
+}
 
 </script>
 
@@ -13,7 +44,7 @@ const props = defineProps({
     <li>
       <span class="title">RGB</span>
       <p class="result">rgb({{ props.user.rgb.r }}, {{ props.user.rgb.g }}, {{ props.user.rgb.b }})</p>
-      <button class="copy-btn">
+      <button class="copy-btn" @click="copyShow('rgb')">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
         </div>
@@ -22,7 +53,7 @@ const props = defineProps({
     <li>
       <span class="title">HEX</span>
       <p class="result">{{ props.user.hex }}</p>
-      <button class="copy-btn">
+      <button class="copy-btn" @click="copyShow('hex')">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
         </div>
@@ -32,7 +63,7 @@ const props = defineProps({
       <span class="title">CMYK</span>
       <p class="result">cmyk({{ props.user.cmyk.c }}%, {{ props.user.cmyk.m }}%, {{ props.user.cmyk.y }}%, {{
         props.user.cmyk.k }}%)</p>
-      <button class="copy-btn">
+      <button class="copy-btn" @click="copyShow('cmyk')">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
         </div>
@@ -41,7 +72,7 @@ const props = defineProps({
     <li>
       <span class="title">HSV</span>
       <p class="result">hsv({{ props.user.hsv.h }}, {{ props.user.hsv.s }}%, {{ props.user.hsv.v }}%)</p>
-      <button class="copy-btn">
+      <button class="copy-btn" @click="copyShow('hsv')">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
         </div>
@@ -50,7 +81,7 @@ const props = defineProps({
     <li>
       <span class="title">HSL</span>
       <p class="result">hsl({{ props.user.hsl.h }}, {{ props.user.hsl.s }}%, {{ props.user.hsl.l }}%)</p>
-      <button class="copy-btn">
+      <button class="copy-btn" @click="copyShow('hsl')">
         <div class="imgs">
           <img src="../assets/img/niantieban.png" alt="复制">
         </div>

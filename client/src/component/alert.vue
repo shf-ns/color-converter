@@ -1,13 +1,33 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue';
 
-const showSuccess = ref<boolean>(false)
-const showError = ref<boolean>(false)
+const showAlert = ref<boolean>(false)
+
+const props = defineProps({
+  show: {
+    type: Boolean,
+    default: false
+  }
+})
+
+
+showAlert.value = true
+onMounted((): void => {
+  const timer = setTimeout(() => {
+    showAlert.value = false
+  }, 2000)
+
+  // 组件卸载时清除定时器
+  onUnmounted((): void => {
+    clearTimeout(timer)
+  })
+})
+
 </script>
 
 <template>
-  <div class="alert-success" v-show="showSuccess">复制成功</div>
-  <div class="alert-error" v-show="showError">复制失败</div>
+  <div class="alert-success" v-show="showAlert">复制成功</div>
+  <div class="alert-error" v-show="!showAlert">复制失败</div>
 </template>
 
 <style scoped>
@@ -22,7 +42,6 @@ const showError = ref<boolean>(false)
   line-height: 50px;
   border-radius: 10px;
   background-color: #d1e7dd;
-  animation: alert 0.5s ease-out;
 }
 
 
@@ -37,20 +56,5 @@ const showError = ref<boolean>(false)
   line-height: 50px;
   border-radius: 10px;
   background-color: #f8d7da;
-  animation: alert 0.5s ease-out;
-}
-
-@keyframes alert {
-  0% {
-    top: 0%;
-  }
-
-  50% {
-    top: 5%;
-  }
-
-  100% {
-    top: 10%;
-  }
 }
 </style>
