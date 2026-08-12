@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue';
+import { useCopyStore } from '@/store/useCopyStore'
 
-const showAlert = ref<boolean>(false)
+const copyStore = useCopyStore()
 
-showAlert.value = true
 onMounted((): void => {
   const timer = setTimeout(() => {
-    showAlert.value = false
-  }, 2000)
+    copyStore.isCopy = false
+  }, 1000)
 
   // 组件卸载时清除定时器
   onUnmounted((): void => {
@@ -18,8 +18,8 @@ onMounted((): void => {
 </script>
 
 <template>
-  <div class="alert-success" v-show="showAlert">复制成功</div>
-  <div class="alert-error" v-show="!showAlert">复制失败</div>
+  <div class="alert-success" v-show="copyStore.isCopy">复制成功</div>
+  <div class="alert-error" v-show="!copyStore.isCopy">复制失败</div>
 </template>
 
 <style scoped>

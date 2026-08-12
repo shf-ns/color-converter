@@ -3,8 +3,6 @@ import { useCopyStore } from '@/store/useCopyStore';
 import type { DetectType } from '@/types';
 
 const copyStore = useCopyStore()
-const { isCopy, copy } = copyStore
-
 
 const props = defineProps({
   user: {
@@ -16,19 +14,19 @@ const props = defineProps({
 
 const copyShow = async (type: DetectType): Promise<void> => {
   if (type === 'rgb') {
-    await copy('rgb(' + props.user.rgb.r + ',' + props.user.rgb.g + ',' + props.user.rgb.b + ')')
+    await copyStore.copy('rgb(' + props.user.rgb.r + ',' + props.user.rgb.g + ',' + props.user.rgb.b + ')')
 
   } else if (type === 'hex') {
-    await copy(props.user.hex)
+    await copyStore.copy(props.user.hex)
 
   } else if (type === 'cmyk') {
-    await copy('cmyk(' + props.user.cmyk.c + ', ' + props.user.cmyk.m + ', ' + props.user.cmyk.y + ', ' + props.user.cmyk.k + ')')
+    await copyStore.copy('cmyk(' + props.user.cmyk.c + ', ' + props.user.cmyk.m + ', ' + props.user.cmyk.y + ', ' + props.user.cmyk.k + ')')
 
   } else if (type === 'hsv') {
-    await copy('hsv(' + props.user.hsv.h + ', ' + props.user.hsv.s + ', ' + props.user.hsv.v + ')')
+    await copyStore.copy('hsv(' + props.user.hsv.h + ', ' + props.user.hsv.s + ', ' + props.user.hsv.v + ')')
 
   } else if (type === 'hsl') {
-    await copy('hsl(' + props.user.hsl.h + ', ' + props.user.hsl.s + ', ' + props.user.hsl.l + ')')
+    await copyStore.copy('hsl(' + props.user.hsl.h + ', ' + props.user.hsl.s + ', ' + props.user.hsl.l + ')')
 
   }
 }

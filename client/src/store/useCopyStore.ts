@@ -7,7 +7,7 @@ export const useCopyStore = defineStore(
     isCopy: Ref<boolean>;
     copy: (text: string) => Promise<void>;
   } => {
-    const isCopy = ref<boolean>(false);
+    let isCopy = ref<boolean>(false);
 
     const copy = async (text: string): Promise<void> => {
       try {
