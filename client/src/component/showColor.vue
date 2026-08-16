@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useCopyStore } from '@/store/useCopyStore';
 import type { DetectType } from '@/types';
+import { debounceAdvanced } from "@/tool/debounce";
 
 const copyStore = useCopyStore()
 
@@ -12,7 +13,7 @@ const props = defineProps({
 });
 
 
-const copyShow = async (type: DetectType): Promise<void> => {
+const copyShow = debounceAdvanced(async (type: DetectType): Promise<void> => {
   if (type === 'rgb') {
     await copyStore.copy('rgb(' + props.user.rgb.r + ',' + props.user.rgb.g + ',' + props.user.rgb.b + ')')
 
@@ -29,7 +30,7 @@ const copyShow = async (type: DetectType): Promise<void> => {
     await copyStore.copy('hsl(' + props.user.hsl.h + ', ' + props.user.hsl.s + ', ' + props.user.hsl.l + ')')
 
   }
-}
+}, 400);
 
 </script>
 

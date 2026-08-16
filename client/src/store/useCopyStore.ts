@@ -4,24 +4,27 @@ import { ref, type Ref } from "vue";
 export const useCopyStore = defineStore(
   "copy",
   (): {
-    isCopy: Ref<boolean>;
+    isCopySucceed: Ref<boolean>;
+    isCopyFailed: Ref<boolean>;
     copy: (text: string) => Promise<void>;
   } => {
-    let isCopy = ref<boolean>(false);
+    let isCopySucceed = ref<boolean>(false);
+    let isCopyFailed = ref<boolean>(false);
 
     const copy = async (text: string): Promise<void> => {
       try {
-        isCopy.value = true;
+        isCopySucceed.value = true;
         await navigator.clipboard.writeText(text);
       } catch (error) {
+        isCopyFailed.value = true;
         console.log(error);
       }
     };
 
     return {
-      isCopy,
+      isCopySucceed,
+      isCopyFailed,
       copy,
     };
   },
 );
-export default useCopyStore;
