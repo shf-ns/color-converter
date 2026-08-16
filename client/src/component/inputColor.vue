@@ -5,7 +5,7 @@ import { detectType, debounceAdvanced } from "@/tool";
 
 const colorValue = ref<string>("#dddfe2");
 
-const emit = defineEmits(['send-color']);
+const emit: (event: "send-color", ...args: any[]) => void = defineEmits(['send-color']);
 
 // 转换结果，传给 showColor
 const colorResult = ref<ColorData>({
@@ -21,7 +21,7 @@ const submitColor = debounceAdvanced(async (): Promise<void> => {
   const value: string = colorValue.value.trim()
 
   try {
-    const res = await fetch('/api/convert', {
+    const res: Response = await fetch('/api/convert', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, value }),

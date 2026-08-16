@@ -13,7 +13,6 @@ const colorInfo = ref<ColorData>(
     hsv: { h: 216, s: 2, v: 89 },
   }
 );
-const showAlert = ref<boolean>(false)
 const handleColor = (newObj: ColorData): void => {
   colorInfo.value = newObj;
 };
