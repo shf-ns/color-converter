@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import type { DetectType, ColorData } from "@/types";
 import { detectType, debounceAdvanced } from "@/tool";
+import { useInputStore } from "@/store/";
+
+const inputStore = useInputStore()
 
 const colorValue = ref<string>("#dddfe2");
 
@@ -27,8 +30,10 @@ const submitColor = debounceAdvanced(async (): Promise<void> => {
       body: JSON.stringify({ type, value }),
     })
     colorResult.value = await res.json()
+    inputStore.isConvertSucceed = true
     emit('send-color', colorResult.value)
   } catch (err) {
+    inputStore.isConvertFailed = true
     console.error('请求失败:', err)
   }
 }, 500);
